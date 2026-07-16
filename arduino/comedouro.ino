@@ -15,7 +15,7 @@ constexpr byte STATUS_LED_PIN = LED_BUILTIN;
 // Configuração do Servo
 // =====================================================
 constexpr int SERVO_OPEN_ANGLE = 90;
-constexpr int SERVO_CLOSED_ANGLE = 180;
+constexpr int SERVO_CLOSED_ANGLE = 0;
 
 constexpr int SERVO_STEP = 2;
 constexpr unsigned long SERVO_STEP_INTERVAL_MS = 20;
@@ -88,6 +88,8 @@ RfidReaderState rfidReaderState;
 
 void setup()
 {
+    Serial.begin(115200);
+    
     pinMode(STATUS_LED_PIN, OUTPUT);
     digitalWrite(STATUS_LED_PIN, LOW);
 
@@ -135,26 +137,30 @@ void pollRfid()
 
 void handleDetectedTag(const char *tag)
 {
+
     digitalWrite(STATUS_LED_PIN, HIGH);
 
+    // Snow apenas abre.
+    // Se já estiver totalmente aberta, não faz nada.
     if (strcmp(tag, TAG_SNOW) == 0)
     {
-        if (!isDoorAtOpenPosition())
+        if (isDoorAtOpenPosition())
         {
-            requestDoorOpen();
+            digitalWrite(STATUS_LED_PIN, LOW);
+            return;
         }
-        else
-        {
-            doorOpen = true;
-        }
-    }
-    else if (!isDoorAtClosedPosition())
-    {
-        requestDoorClose();
+        requestDoorOpen();
     }
     else
     {
-        doorOpen = false;
+        // Lilith e Sophie apenas fecham.
+        // Se já estiver totalmente fechada, não faz nada.
+        if (isDoorAtClosedPosition())
+        {
+            digitalWrite(STATUS_LED_PIN, LOW);
+            return;
+        }
+        requestDoorClose();
     }
 
     digitalWrite(STATUS_LED_PIN, LOW);
