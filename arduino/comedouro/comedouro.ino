@@ -14,7 +14,7 @@ constexpr byte STATUS_LED_PIN = LED_BUILTIN;
 // =====================================================
 // Configuração do Servo
 // =====================================================
-constexpr int SERVO_OPEN_ANGLE = 90;
+constexpr int SERVO_OPEN_ANGLE = 145;
 constexpr int SERVO_CLOSED_ANGLE = 0;
 
 constexpr int SERVO_STEP = 2;
