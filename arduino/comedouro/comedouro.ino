@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <string.h>
 
+// Placa-alvo: Arduino Nano V3 (ATmega328P, 5 V).
+// O mapeamento D2/D3/D10/LED_BUILTIN também funciona no Uno.
 // =====================================================
 // Configuração de Hardware
 // =====================================================
@@ -14,7 +16,7 @@ constexpr byte STATUS_LED_PIN = LED_BUILTIN;
 // =====================================================
 // Configuração do Servo
 // =====================================================
-constexpr int SERVO_OPEN_ANGLE = 145;
+constexpr int SERVO_OPEN_ANGLE = 105;
 constexpr int SERVO_CLOSED_ANGLE = 0;
 
 constexpr int SERVO_STEP = 2;
@@ -31,7 +33,7 @@ constexpr uint8_t END_BYTE = 0xBB;
 constexpr size_t MAX_PACKET_SIZE = 64;
 constexpr unsigned long BYTE_TIMEOUT_MS = 200;
 
-constexpr int NATIONAL_DEC_WIDTH = 12;
+constexpr int NATIONAL_DEC_WIDTH = 11;
 
 // =====================================================
 // Tags cadastradas
@@ -431,6 +433,11 @@ void u64ToString(uint64_t value, char *output, size_t size)
 
 void nationalToString(uint64_t national, char *output, size_t size)
 {
+    if (size == 0)
+    {
+        return;
+    }
+
     char number[32];
 
     u64ToString(national, number, sizeof(number));
@@ -441,6 +448,12 @@ void nationalToString(uint64_t national, char *output, size_t size)
     if (padding < 0)
     {
         padding = 0;
+    }
+
+    if (static_cast<size_t>(length + padding) >= size)
+    {
+        output[0] = '\0';
+        return;
     }
 
     memset(output, '0', padding);
