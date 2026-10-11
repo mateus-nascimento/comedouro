@@ -64,6 +64,9 @@ Módulo GND ──┬──→ Nano GND
 
 ### Distribuição via protoboard
 
+<img width="1634" height="919" alt="image" src="https://github.com/user-attachments/assets/02eb3ec6-9cd2-449d-a751-7c8739694317" />
+
+
 ```
 Módulo 5V  ──→  Nano 5V e trilho (+) para o servo
 Módulo 3,3V ou 5V ──→ VCC do leitor, conforme especificação
